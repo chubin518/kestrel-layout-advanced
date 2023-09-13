@@ -15,7 +15,7 @@ import (
 )
 
 type RouteFunc func(gin.IRouter)
-type ConfigFunc func(*WebGraceful)
+type ConfigureFunc func(*WebGraceful)
 
 // CreateWebGraceful create a web graceful host
 func CreateWebGraceful() *WebGraceful {
@@ -126,7 +126,7 @@ func (app *WebGraceful) UseHooks(hooks ...IHook) *WebGraceful {
 }
 
 // Configure
-func (app *WebGraceful) Configure(configurators ...ConfigFunc) *WebGraceful {
+func (app *WebGraceful) Configure(configurators ...ConfigureFunc) *WebGraceful {
 	for _, cfg := range configurators {
 		if cfg != nil {
 			cfg(app)
