@@ -11,26 +11,35 @@ import (
 	"github.com/chubin518/kestrel-layout-advanced/internal/routes/handler"
 	"github.com/chubin518/kestrel-layout-advanced/internal/service"
 	"github.com/chubin518/kestrel-layout-advanced/pkg/config"
+	"github.com/chubin518/kestrel-layout-advanced/pkg/graceful"
 	"github.com/chubin518/kestrel-layout-advanced/pkg/logging"
-	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 )
 
 // Injectors from wire.go:
 
-func InitRoutes(iConfig config.IConfig, iLogging logging.ILogging) func(gin.IRouter) {
+func BuildContainer(iConfig config.IConfig, iLogging logging.ILogging) (*Container, error) {
 	fileService := service.NewFileService()
 	fileHandler := handler.NewFileHandler(fileService)
 	shellService := service.NewShellService()
 	shellHandler := handler.NewShellHandler(shellService)
-	v := routes.InitRoutes(fileHandler, shellHandler)
-	return v
+	routeFunc := routes.RegisterRoutes(fileHandler, shellHandler)
+	container := &Container{
+		ConfigRoutes: routeFunc,
+	}
+	return container, nil
 }
 
 // wire.go:
+
+type Container struct {
+	ConfigRoutes graceful.RouteFunc
+}
+
+var ContainerSet = wire.NewSet(wire.Struct(new(Container), "*"))
 
 var ServiceSet = wire.NewSet(service.NewShellService, service.NewFileService)
 
 var HandlerSet = wire.NewSet(handler.NewShellHandler, handler.NewFileHandler)
 
-var RoutesSet = wire.NewSet(routes.InitRoutes)
+var RoutesSet = wire.NewSet(routes.RegisterRoutes)

@@ -8,10 +8,16 @@ import (
 	"github.com/chubin518/kestrel-layout-advanced/internal/routes/handler"
 	"github.com/chubin518/kestrel-layout-advanced/internal/service"
 	"github.com/chubin518/kestrel-layout-advanced/pkg/config"
+	"github.com/chubin518/kestrel-layout-advanced/pkg/graceful"
 	"github.com/chubin518/kestrel-layout-advanced/pkg/logging"
-	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 )
+
+type Container struct {
+	ConfigRoutes graceful.RouteFunc
+}
+
+var ContainerSet = wire.NewSet(wire.Struct(new(Container), "*"))
 
 var ServiceSet = wire.NewSet(
 	service.NewShellService,
@@ -24,9 +30,9 @@ var HandlerSet = wire.NewSet(
 )
 
 var RoutesSet = wire.NewSet(
-	routes.InitRoutes,
+	routes.RegisterRoutes,
 )
 
-func InitRoutes(config.IConfig, logging.ILogging) func(gin.IRouter) {
-	panic(wire.Build(ServiceSet, HandlerSet, RoutesSet))
+func BuildContainer(config.IConfig, logging.ILogging) (*Container, error) {
+	panic(wire.Build(ServiceSet, HandlerSet, RoutesSet, ContainerSet))
 }

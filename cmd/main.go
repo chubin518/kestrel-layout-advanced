@@ -25,7 +25,12 @@ func main() {
 		UseMiddlewares(middleware.NewRequestId(), middleware.NewRecovery()).
 		UseHealth().
 		Configure(func(wg *graceful.WebGraceful) {
-			wg.UseRoutes(InitRoutes(wg.GetConfig(), wg.GetLogging()))
+			contarter, err := BuildContainer(wg.GetConfig(), wg.GetLogging())
+			if err != nil {
+				logging.Fatal("Error creating container: %v", err)
+				return
+			}
+			wg.UseRoutes(contarter.ConfigRoutes)
 		}).
 		RunWithContext(context.Background()); err != nil {
 		logging.Error("error: %v", err)

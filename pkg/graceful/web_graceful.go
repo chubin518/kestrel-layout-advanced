@@ -14,6 +14,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type RouteFunc func(gin.IRouter)
+type ConfigFunc func(*WebGraceful)
+
 // CreateWebGraceful create a web graceful host
 func CreateWebGraceful() *WebGraceful {
 	if buildinfo.IsDev() {
@@ -123,7 +126,7 @@ func (app *WebGraceful) UseHooks(hooks ...IHook) *WebGraceful {
 }
 
 // Configure
-func (app *WebGraceful) Configure(configurators ...func(*WebGraceful)) *WebGraceful {
+func (app *WebGraceful) Configure(configurators ...ConfigFunc) *WebGraceful {
 	for _, cfg := range configurators {
 		if cfg != nil {
 			cfg(app)
@@ -134,7 +137,6 @@ func (app *WebGraceful) Configure(configurators ...func(*WebGraceful)) *WebGrace
 
 // RunWithContext implements Graceful.
 func (app *WebGraceful) RunWithContext(ctx context.Context) error {
-
 	srv := &http.Server{
 		Addr:           app.addr,
 		Handler:        app.router,

@@ -5,13 +5,14 @@ import (
 	"net/http"
 
 	"github.com/chubin518/kestrel-layout-advanced/internal/routes/handler"
+	"github.com/chubin518/kestrel-layout-advanced/pkg/graceful"
 	"github.com/chubin518/kestrel-layout-advanced/pkg/logging"
 	"github.com/chubin518/kestrel-layout-advanced/webui"
 	"github.com/gin-gonic/gin"
 )
 
-// InitRoutes
-func InitRoutes(fileHandler *handler.FileHandler, shellHandler *handler.ShellHandler) func(gin.IRouter) {
+// RegisterRoutes
+func RegisterRoutes(fileHandler *handler.FileHandler, shellHandler *handler.ShellHandler) graceful.RouteFunc {
 	return func(router gin.IRouter) {
 		dist, err := fs.Sub(webui.StaticFS, "dist/assets")
 		if err != nil {

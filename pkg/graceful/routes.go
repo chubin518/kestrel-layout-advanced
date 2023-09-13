@@ -45,7 +45,7 @@ func (app *WebGraceful) NoRoute(handlers ...gin.HandlerFunc) *WebGraceful {
 }
 
 // UseRoutes
-func (app *WebGraceful) UseRoutes(routes ...func(gin.IRouter)) *WebGraceful {
+func (app *WebGraceful) UseRoutes(routes ...RouteFunc) *WebGraceful {
 	for _, apply := range routes {
 		if apply != nil {
 			apply(app.router)
