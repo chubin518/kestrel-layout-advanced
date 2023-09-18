@@ -13,7 +13,7 @@ APP_ENV="dev"
 GO_OS="linux"
 
 # 目标指令集 amd64/arm64
-GO_ARCH="arm64"
+GO_ARCH="amd64"
 
 echo "building webui"
 
@@ -63,7 +63,7 @@ BUILD_FLAGS="-s -w -linkmode external -extldflags -static -X github.com/chubin51
 -X github.com/chubin518/kestrel-layout-advanced/buildinfo.Name=$APP_NAME \
 -X github.com/chubin518/kestrel-layout-advanced/buildinfo.Environment=$APP_ENV \
 -X 'github.com/chubin518/kestrel-layout-advanced/buildinfo.BuildTime=`date "+%Y-%m-%d %H:%M:%S"`' \
--X 'github.com/chubin518/kestrel-layout-advanced/buildinfo.BuildVersion=`go version`'"
+-X 'github.com/chubin518/kestrel-layout-advanced/buildinfo.GoVersion=`go version`'"
 
 # build command
 CGO_ENABLED=1 GOOS=$GO_OS GOARCH=$GO_ARCH CC=$GO_CC CXX=$GO_CXX AR=$GO_AR \
@@ -71,6 +71,12 @@ go build -o $OUT_PUT -ldflags "$BUILD_FLAGS" ./cmd \
 
 echo "Build successfully"
 
+file $OUT_PUT
+
 chmod a+x $OUT_PUT
 
 echo "Run App ./$OUT_PUT"
+
+
+
+

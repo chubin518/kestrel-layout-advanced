@@ -19,7 +19,6 @@
 
 # Go workspace file
 go.work
-logs
 go.sum
 .DS_Store
 node_modules
@@ -29,3 +28,4 @@ deploy
 dist-ssr
 test/conf
 dist
+logs

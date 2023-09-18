@@ -27,7 +27,7 @@ func Download(url, dst string, callback ProcessCallback) error {
 	}
 	defer file.Close()
 	// 使用io.TeeReader将数据同时写入文件和进度报告回调函数
-	reader := io.TeeReader(resp.Body, &processHandler{total: resp.ContentLength, callback: callback})
+	reader := io.TeeReader(resp.Body, buildProcessHandler(resp.ContentLength, callback))
 	_, err = io.Copy(file, reader)
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ type processHandler struct {
 	set      map[int64]bool
 }
 
-func newProcessHandler(total int64, callback ProcessCallback) *processHandler {
+func buildProcessHandler(total int64, callback ProcessCallback) *processHandler {
 	return &processHandler{
 		current:  0,
 		set:      make(map[int64]bool),

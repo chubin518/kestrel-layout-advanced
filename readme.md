@@ -115,6 +115,19 @@ go run ./cmd
 ./dist/app
 
 ```
+### Docker CGO跨平台构建
+
+```
+# build image
+
+docker build --platform linux/arm64/v8 -t app_brain:latest . 
+
+# build app
+
+docker run -it --rm -v $PWD:/app/dist -p 8888:8888 --platform linux/arm64/v8 app_brain:latest /bin/sh
+
+docker run -it --rm -v /Users/lxw/Documents/eavchina/project/rk3588_app_install:/app/install -p 8888:8888 --platform linux/arm64/v8 app_brain:latest /bin/sh
+```
 
 ### CGO跨平台构建
 

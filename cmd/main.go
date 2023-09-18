@@ -15,7 +15,7 @@ func main() {
 
 	if err := graceful.
 		CreateWebGraceful().
-		UseAddr(":10019").
+		UseAddr(":8080").
 		UseCors(func(conf *cors.Config) {
 			conf.AllowAllOrigins = true
 			conf.AllowHeaders = []string{"*"}

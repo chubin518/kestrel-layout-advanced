@@ -24,7 +24,7 @@ var (
 	// build time
 	BuildTime string
 	// build go version
-	BuildVersion string
+	GoVersion string
 )
 
 // Active

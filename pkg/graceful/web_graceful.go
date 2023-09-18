@@ -96,14 +96,14 @@ func (app *WebGraceful) UseWriteTimeout(timeout time.Duration) *WebGraceful {
 }
 
 // UseConfig
-func (app *WebGraceful) UseConfig(config *config.IConfig) *WebGraceful {
-	app.config = *config
+func (app *WebGraceful) UseConfig(config config.IConfig) *WebGraceful {
+	app.config = config
 	return app
 }
 
 // UseLogging
-func (app *WebGraceful) UseLogging(logging *logging.ILogging) *WebGraceful {
-	app.logging = *logging
+func (app *WebGraceful) UseLogging(logging logging.ILogging) *WebGraceful {
+	app.logging = logging
 	return app
 }
 
